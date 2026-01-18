@@ -7,19 +7,20 @@ export default function Home() {
   const [response, setResponse] = useState("");
 
   async function sendMessage() {
-    if (!input.trim()) return;
+  if (!input.trim()) return;
 
-    setResponse("Thinking…");
+  setResponse("Thinking…");
 
-    // TEMP placeholder (we’ll connect AI next)
-    setTimeout(() => {
-      setResponse(
-        "I am here. Tell me what you are feeling. Take your time."
-      );
-    }, 800);
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: input }),
+  });
 
-    setInput("");
-  }
+  const data = await res.json();
+  setResponse(data.reply);
+  setInput("");
+}
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
